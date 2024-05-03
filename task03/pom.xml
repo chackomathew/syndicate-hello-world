@@ -47,7 +47,7 @@
                 <version>${syndicate.java.plugin.version}</version>
                 <configuration>
                     <packages>
-                        <package>com.DemoSyndicateJava</package>
+                        <package>com.test03</package>
                     </packages>
                     <fileName>${project.name}-${project.version}.jar</fileName>
                 </configuration>

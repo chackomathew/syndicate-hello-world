@@ -1,4 +1,4 @@
-package com.DemoSyndicateJava;
+package com.test03;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -10,9 +10,8 @@ import com.syndicate.deployment.model.lambda.url.AuthType;
 import java.util.HashMap;
 import java.util.Map;
 
-@LambdaHandler(lambdaName = "hello_world-test",
+@LambdaHandler(lambdaName = "hello_world",
 	roleName = "hello_world-test-role",
-	isPublishVersion = true,
 	logsExpiration = RetentionSetting.SYNDICATE_ALIASES_SPECIFIED
 )
 @LambdaUrlConfig(authType = AuthType.NONE)
