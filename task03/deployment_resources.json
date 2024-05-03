@@ -43,8 +43,9 @@
       "/hello": {
         "enable_cors": false,
         "GET": {
-          "authorization_type": "AWS_IAM",
-          "integration_type": "mock",
+          "authorization_type": "NONE",
+          "integration_type": "lambda",
+          "lambda_name": "cmtr-21c6166e-hello_world-test",
           "api_key_required": false,
           "method_request_parameters": {},
           "integration_request_body_template": {},
