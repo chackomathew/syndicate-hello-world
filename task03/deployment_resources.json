@@ -24,18 +24,15 @@
     },
     "resource_type": "iam_policy"
   },
-  "hello_world-test-role": {
+  "hello_world-role": {
     "predefined_policies": [],
     "principal_service": "lambda",
     "custom_policies": [
       "lambda-basic-execution"
     ],
-    "resource_type": "iam_role",
-    "allowed_accounts": [
-      "${account_id}"
-    ]
+    "resource_type": "iam_role"
   },
-  "demo-api": {
+  "task3_api": {
     "resource_type": "api_gateway",
     "deploy_stage": "api",
     "dependencies": [],
@@ -45,7 +42,7 @@
         "GET": {
           "authorization_type": "NONE",
           "integration_type": "lambda",
-          "lambda_name": "cmtr-21c6166e-hello_world-test",
+          "lambda_name": "hello_world",
           "api_key_required": false,
           "method_request_parameters": {},
           "integration_request_body_template": {},
