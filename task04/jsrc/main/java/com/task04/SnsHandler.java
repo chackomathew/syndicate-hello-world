@@ -18,8 +18,6 @@ import java.util.Map;
 
 @LambdaHandler(lambdaName = "sns_handler",
 	roleName = "sns_handler-role",
-	isPublishVersion = true,
-	aliasName = "${lambdas_alias_name}",
 	logsExpiration = RetentionSetting.SYNDICATE_ALIASES_SPECIFIED
 )
 @SnsEventSource(regionScope = RegionScope.DEFAULT, targetTopic = "lambda_topic")
