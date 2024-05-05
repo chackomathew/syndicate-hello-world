@@ -11,6 +11,8 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syndicate.deployment.annotations.lambda.LambdaHandler;
+import com.syndicate.deployment.annotations.resources.DependsOn;
+import com.syndicate.deployment.model.ResourceType;
 import com.syndicate.deployment.model.RetentionSetting;
 
 import java.time.Instant;
@@ -22,6 +24,7 @@ import java.util.UUID;
 	roleName = "api_handler-role",
 	logsExpiration = RetentionSetting.SYNDICATE_ALIASES_SPECIFIED
 )
+@DependsOn(name = "Events", resourceType = ResourceType.DYNAMODB_TABLE)
 public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     private final AmazonDynamoDB dynamoDb = AmazonDynamoDBClientBuilder.defaultClient();
 
@@ -47,7 +50,7 @@ public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, A
             e.printStackTrace();
         }
 
-        dynamoDb.putItem("cmtr-21c6166e-Events", item);
+        dynamoDb.putItem("cmtr-21c6166e-Events-test", item);
 
         Map<String, String> response = new HashMap<>();
         try {
