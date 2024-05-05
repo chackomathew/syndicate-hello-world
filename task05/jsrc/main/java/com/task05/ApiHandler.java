@@ -1,7 +1,14 @@
 package com.task05;
 
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -26,31 +33,34 @@ import java.util.UUID;
 )
 @DependsOn(name = "Events", resourceType = ResourceType.DYNAMODB_TABLE)
 public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
-    private final AmazonDynamoDB dynamoDb = AmazonDynamoDBClientBuilder.defaultClient();
+    private final AmazonDynamoDB dynamoDBClient;
+    private final DynamoDB dynamoDB;
+
+    public ApiHandler() {
+        dynamoDBClient = new AmazonDynamoDBClient();
+        dynamoDBClient.setRegion(Region.getRegion(Regions.EU_CENTRAL_1));
+        dynamoDB = new DynamoDB(dynamoDBClient);
+    }
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-        Map<String, AttributeValue> item = new HashMap<>();
-        String eventId = UUID.randomUUID().toString();
-        item.put("id", new AttributeValue().withS(eventId));
-
         Event event =null;
         try {
             event = objectMapper.readValue(input.getBody(), Event.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        String principalId = String.valueOf(event.getPrincipalId());
-        item.put("principalId", new AttributeValue().withN(principalId));
-        item.put("createdAt", new AttributeValue().withS(Instant.now().toString()));
-        try {
-            item.put("body", new AttributeValue().withS(objectMapper.writeValueAsString(event.getContent())));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
 
-        dynamoDb.putItem("cmtr-21c6166e-Events-test", item);
+        Item item = new Item()
+                .withPrimaryKey("id", UUID.randomUUID().toString())
+                .withNumber("principalId", event.getPrincipalId())
+                .withString("createdAt", Instant.now().toString())
+                .withMap("body", event.getContent());
+
+        Table table = dynamoDB.getTable("cmtr-21c6166e-Events-test");
+        table.putItem(new PutItemSpec().withItem(item));
+
 
         Map<String, String> response = new HashMap<>();
         try {
