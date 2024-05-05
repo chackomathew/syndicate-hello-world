@@ -25,7 +25,10 @@
     "resource_type": "iam_policy"
   },
   "api_handler-role": {
-    "predefined_policies": [],
+    "predefined_policies": [
+      "AmazonDynamoDBFullAccess"
+
+    ],
     "principal_service": "lambda",
     "custom_policies": [
       "lambda-basic-execution"
@@ -43,12 +46,8 @@
           "authorization_type": "NONE",
           "integration_type": "lambda",
           "lambda_name": "api_handler",
-          "api_key_required": false,
-          "method_request_parameters": {},
-          "integration_request_body_template": {},
-          "responses": [],
-          "integration_responses": [],
-          "default_error_pattern": true
+          "enable_proxy": true,
+          "api_key_required": false
         }
       }
     }

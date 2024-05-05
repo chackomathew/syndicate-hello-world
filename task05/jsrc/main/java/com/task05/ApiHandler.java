@@ -37,13 +37,13 @@ public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, A
         try {
             body = objectMapper.readValue(input.getBody(), Map.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         String principalId = body.get("principalId");
         try {
             content = objectMapper.readValue(body.get("content"), Map.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         item.put("principalId", new AttributeValue().withN(principalId));
@@ -51,16 +51,16 @@ public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, A
         try {
             item.put("body", new AttributeValue().withS(objectMapper.writeValueAsString(content)));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
-        PutItemResult result = dynamoDb.putItem("Events", item);
+        PutItemResult result = dynamoDb.putItem("cmtr-21c6166e-Events", item);
 
         Map<String, String> response = new HashMap<>();
         try {
             response.put("event", objectMapper.writeValueAsString(result.getAttributes()));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return new APIGatewayProxyResponseEvent()
