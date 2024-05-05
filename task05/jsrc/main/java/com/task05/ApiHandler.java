@@ -39,7 +39,7 @@ public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, A
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        String principalId = body.get("principalId");
+        String principalId = String.valueOf(body.get("principalId"));
         try {
             content = objectMapper.readValue(body.get("content"), Map.class);
         } catch (JsonProcessingException e) {
