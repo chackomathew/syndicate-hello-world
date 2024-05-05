@@ -32,33 +32,26 @@ public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, A
         String eventId = UUID.randomUUID().toString();
         item.put("id", new AttributeValue().withS(eventId));
 
-        Map<String, String> body = null;
-        Map<String, String> content = null;
+        Event event =null;
         try {
-            body = objectMapper.readValue(input.getBody(), Map.class);
+            event = objectMapper.readValue(input.getBody(), Event.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        String principalId = String.valueOf(body.get("principalId"));
-        try {
-            content = objectMapper.readValue(body.get("content"), Map.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
+        String principalId = String.valueOf(event.getPrincipalId());
         item.put("principalId", new AttributeValue().withN(principalId));
         item.put("createdAt", new AttributeValue().withS(Instant.now().toString()));
         try {
-            item.put("body", new AttributeValue().withS(objectMapper.writeValueAsString(content)));
+            item.put("body", new AttributeValue().withS(objectMapper.writeValueAsString(event.getContent())));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
-        PutItemResult result = dynamoDb.putItem("cmtr-21c6166e-Events", item);
+        dynamoDb.putItem("cmtr-21c6166e-Events", item);
 
         Map<String, String> response = new HashMap<>();
         try {
-            response.put("event", objectMapper.writeValueAsString(result.getAttributes()));
+            response.put("event", objectMapper.writeValueAsString(event));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
