@@ -38,7 +38,7 @@
     "resource_type": "sqs_queue",
     "fifo_queue": false,
     "region": "eu-central-1",
-    "visibility_timeout": 30,
+    "visibility_timeout": 300,
     "delay_seconds": 0,
     "maximum_message_size": 1024,
     "message_retention_period": 60,
