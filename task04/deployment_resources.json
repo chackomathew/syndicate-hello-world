@@ -26,7 +26,8 @@
   },
   "sqs_handler-role": {
     "predefined_policies": [
-      "AWSLambdaSQSQueueExecutionRole"
+      "AWSLambdaSQSQueueExecutionRole",
+      "AmazonSNSRole"
     ],
     "principal_service": "lambda",
     "custom_policies": [
