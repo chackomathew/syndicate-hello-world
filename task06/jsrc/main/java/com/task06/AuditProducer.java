@@ -48,7 +48,7 @@ public class AuditProducer implements RequestHandler<DynamodbEvent, Void> {
         item.put("modificationTime", new com.amazonaws.services.dynamodbv2.model.AttributeValue(Instant.now().toString()));
         item.put("newValue", new com.amazonaws.services.dynamodbv2.model.AttributeValue(newItem.get("value").getN()));
 
-        ddb.putItem(new PutItemRequest().withTableName("cmtr-21c6166e-Audit").withItem(item));
+        ddb.putItem(new PutItemRequest().withTableName("cmtr-21c6166e-Audit-test").withItem(item));
     }
 
     private void createAuditLogForUpdate(Map<String, AttributeValue> oldItem, Map<String, AttributeValue> newItem) {
@@ -60,6 +60,6 @@ public class AuditProducer implements RequestHandler<DynamodbEvent, Void> {
         item.put("oldValue", new com.amazonaws.services.dynamodbv2.model.AttributeValue(oldItem.get("value").getN()));
         item.put("newValue", new com.amazonaws.services.dynamodbv2.model.AttributeValue(newItem.get("value").getN()));
 
-        ddb.putItem(new PutItemRequest().withTableName("cmtr-21c6166e-Audit").withItem(item));
+        ddb.putItem(new PutItemRequest().withTableName("cmtr-21c6166e-Audit-test").withItem(item));
     }
 }
