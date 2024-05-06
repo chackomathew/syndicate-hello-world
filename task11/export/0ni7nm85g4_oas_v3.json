@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "",
+    "title": "Swagger UI",
     "version": "2024-05-06T21:54:04Z"
   },
   "servers": [
