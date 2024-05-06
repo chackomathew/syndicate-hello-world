@@ -74,7 +74,7 @@ public class UuidGenerator implements RequestHandler<Object, String> {
         InputStream inputStream = new ByteArrayInputStream(fileContent.getBytes());
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(fileContent.getBytes().length);
-        s3Client.putObject("cmtr-21c6166e--uuid-storage-test", fileName, inputStream, metadata);
+        s3Client.putObject("cmtr-21c6166e-uuid-storage-test", fileName, inputStream, metadata);
     }
 
 }
