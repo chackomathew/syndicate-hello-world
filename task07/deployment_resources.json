@@ -51,6 +51,6 @@
     "resource_type": "cloudwatch_rule",
     "rule_type": "schedule",
     "region": "eu-central-1",
-    "expression": "rate(1 minute)"
+    "expression": "cron(0/1 * * * ? *)"
   }
 }
