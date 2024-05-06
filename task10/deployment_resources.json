@@ -33,14 +33,8 @@
     ],
     "resource_type": "iam_role"
   },
-  "task10_api-test": {
+  "task10_api": {
     "deploy_stage": "api",
-    "dependencies": [
-      {
-        "resource_name": "api_handler",
-        "resource_type": "lambda"
-      }
-    ],
     "resources": {
       "/signup": {
         "POST": {
