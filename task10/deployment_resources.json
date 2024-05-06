@@ -33,7 +33,7 @@
     ],
     "resource_type": "iam_role"
   },
-  "task10_api": {
+  "task10_api-test": {
     "deploy_stage": "api",
     "dependencies": [
       {
