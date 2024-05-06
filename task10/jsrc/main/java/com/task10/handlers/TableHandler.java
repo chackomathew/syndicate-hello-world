@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class TableHandler {
 
-    private static final String DYNAMODB_TABLE = "cmtr-914927e6-Tables-test";
+    private static final String DYNAMODB_TABLE = "cmtr-21c6166e-Tables-test";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

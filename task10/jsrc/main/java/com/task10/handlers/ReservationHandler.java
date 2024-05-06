@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 
 public class ReservationHandler {
 
-    private static final String DYNAMODB_RESERVATION = "cmtr-914927e6-Reservations-test";
-    private static final String DYNAMODB_TABLE = "cmtr-914927e6-Tables-test";
+    private static final String DYNAMODB_RESERVATION = "cmtr-21c6166e-Reservations-test";
+    private static final String DYNAMODB_TABLE = "cmtr-21c6166e-Tables-test";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

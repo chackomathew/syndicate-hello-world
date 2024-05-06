@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class SingUpHandler {
 
-    private static final String USER_POOL_NAME = "cmtr-914927e6-simple-booking-userpool-test";
+    private static final String USER_POOL_NAME = "cmtr-21c6166e-simple-booking-userpool-test";
 
     private static final AWSCognitoIdentityProvider cognitoClient = AWSCognitoIdentityProviderClientBuilder.defaultClient();
     private static final ObjectMapper objectMapper = new ObjectMapper();
