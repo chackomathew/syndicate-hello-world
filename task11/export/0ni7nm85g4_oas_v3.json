@@ -2,6 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Swagger UI",
+    "description": "this is description",
     "version": "2024-05-06T21:54:04Z"
   },
   "servers": [
@@ -17,13 +18,15 @@
   "paths": {
     "/reservations": {
       "get": {
+        "summary": "Retrieve all reservations",
+        "description": "Retrieve all reservations",
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "A list of reservations",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Empty"
+                  "$ref": "#/components/schemas/ReservationList"
                 }
               }
             }
@@ -42,13 +45,25 @@
         }
       },
       "post": {
+        "description": "Add a new reservations to the store",
+        "summary": "Creates a new reservation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reservation"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "200 response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Empty"
+                  "$ref": "#/components/schemas/ReservationResponse"
                 }
               }
             }
@@ -69,16 +84,21 @@
     },
     "/tables": {
       "get": {
+        "summary": "Retrieve all tables",
+        "description": "Retrieve all tables",
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "The request has succeeded. The server has processed the request and has returned a list of tables as specified in the response body. Each table includes details such as its ID, number, capacity, whether it's in the VIP hall, and optionally, the minimum order required to book it.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Empty"
+                  "$ref": "#/components/schemas/TableList"
                 }
               }
             }
+          },
+          "400": {
+            "description": "There was an error in the request."
           }
         },
         "x-amazon-apigateway-integration": {
@@ -94,16 +114,31 @@
         }
       },
       "post": {
+        "summary": "Create a new table",
+        "description": "Create a new table",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Table"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "The request has succeeded. The server has successfully created a new table based on the information provided in the request body. The response contains the ID of the newly created table.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Empty"
+                  "$ref": "#/components/schemas/TableResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "There was an error in the request."
           }
         },
         "x-amazon-apigateway-integration": {
@@ -121,16 +156,31 @@
     },
     "/signin": {
       "post": {
+        "summary": "Sign-in to the system",
+        "description": "Sign-in to the system",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignIn"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "The request has succeeded. The server has processed the sign-in request, and the provided credentials (email and password) were valid. The response contains an $access token, which will be used for subsequent authenticated requests.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Empty"
+                  "$ref": "#/components/schemas/SignInResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "There was an error in the request."
           }
         },
         "x-amazon-apigateway-integration": {
@@ -148,16 +198,24 @@
     },
     "/signup": {
       "post": {
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Empty"
-                }
+        "summary": "Sign-up for the system",
+        "description": "Sign-up for the system",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUp"
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sign-up process is successful."
+          },
+          "400": {
+            "description": "There was an error in the request."
           }
         },
         "x-amazon-apigateway-integration": {
@@ -175,26 +233,32 @@
     },
     "/tables/{tableId}": {
       "get": {
+        "summary": "Retrieve information of a specific table",
+        "description": "Retrieve information of a specific table",
         "parameters": [
           {
-            "name": "tableId",
             "in": "path",
-            "required": true,
+            "name": "tableId",
             "schema": {
-              "type": "string"
-            }
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID of the table to be retrieved"
           }
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "The request has succeeded. The server has processed the request and has returned information about the table specified by tableId. The response body contains details such as the table's ID, number, capacity, whether it's in the VIP hall, and optionally, the minimum order required to book it.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Empty"
+                  "$ref": "#/components/schemas/Table"
                 }
               }
             }
+          },
+          "400": {
+            "description": "There was an error in the request."
           }
         },
         "x-amazon-apigateway-integration": {
@@ -213,9 +277,164 @@
   },
   "components": {
     "schemas": {
-      "Empty": {
-        "title": "Empty Schema",
-        "type": "object"
+      "Reservation": {
+        "type": "object",
+        "properties": {
+          "tableNumber": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of the table"
+          },
+          "clientName": {
+            "type": "string",
+            "description": "Client's name"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Client's phone number"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date in yyyy-MM-dd format"
+          },
+          "slotTimeStart": {
+            "type": "string",
+            "description": "Time slot start time in HH:MM format, like \"13:00\""
+          },
+          "slotTimeEnd": {
+            "type": "string",
+            "description": "Time slot end time in HH:MM format, like \"15:00\""
+          }
+        }
+      },
+      "ReservationList": {
+        "type": "object",
+        "properties": {
+          "reservations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reservation"
+            }
+          }
+        }
+      },
+      "ReservationResponse": {
+        "type": "object",
+        "properties": {
+          "reservationId": {
+            "type": "string",
+            "description": "UUIDv4 ID of the Reservation"
+          }
+        }
+      },
+      "Table": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID of the table"
+          },
+          "number": {
+            "type": "integer",
+            "description": "Number of the table"
+          },
+          "places": {
+            "type": "integer",
+            "description": "Amount of people to sit at the table"
+          },
+          "isVip": {
+            "type": "boolean",
+            "description": "Is the table in the VIP hall"
+          },
+          "minOrder": {
+            "type": "integer",
+            "description": "Table deposit required to book it",
+            "nullable": true
+          }
+        }
+      },
+      "TableList": {
+        "type": "object",
+        "properties": {
+          "tables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Table"
+            }
+          }
+        }
+      },
+      "TableResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID of the newly created table"
+          }
+        }
+      },
+      "SignIn": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the user"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "description": "Password of the user"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "SignInResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "Access token for the session"
+          }
+        }
+      },
+      "SignUp": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "First name of the user"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name of the user"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the user"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "description": "Password of the user"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "authorizer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "x-amazon-apigateway-authtype": "cognito_user_pools",
+        "x-amazon-apigateway-authorizer": {
+          "x-syndicate-cognito-userpool-names": ["simple-booking-userpool"],
+          "type": "cognito_user_pools"
+        }
       }
     }
   }
